@@ -1,5 +1,4 @@
-#ifndef _APPLICATION_H_
-#define _APPLICATION_H_
+#pragma once 
 
 #include <QApplication>
 
@@ -24,5 +23,3 @@ namespace NodeEditor {
 	};
 
 }
-
-#endif // _APPLICATION_H_

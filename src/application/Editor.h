@@ -1,5 +1,4 @@
-#ifndef _EDITOR_H_
-#define _EDITOR_H_
+#pragma once 
 
 namespace NodeEditor
 {
@@ -18,4 +17,3 @@ namespace NodeEditor
 
 }
 
-#endif // _EDITOR_H_
