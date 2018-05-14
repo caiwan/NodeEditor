@@ -4,6 +4,12 @@ cmake_minimum_required(VERSION 2.8.11)
 if( APPLE )    
     add_executable(${APPLICATION_NAME} MACOSX_BUNDLE "main.cpp")
 
+	set_target_properties(${APPLICATION_NAME}
+    PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
+    )
+
+
     # Add system frameworks
     ADD_SYSTEM_FRAMEWORK( Foundation ${APPLICATION_NAME} )
     ADD_SYSTEM_FRAMEWORK( CoreFoundation ${APPLICATION_NAME} )
