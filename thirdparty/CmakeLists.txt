@@ -1,0 +1,10 @@
+include(${CMAKE_CURRENT_SOURCE_DIR}/nlohmann_json.cmake)
+include(${CMAKE_CURRENT_SOURCE_DIR}/nodeeditor.cmake)
+
+add_custom_target(ExternalDependencies)
+add_dependencies(ExternalDependencies
+    nlohmann_json
+    nodeeditor
+)
+
+set_target_properties(ExternalDependencies PROPERTIES FOLDER ExternalProjectTargets)

@@ -1,6 +1,0 @@
-[submodule "externals/nodeeditor"]
-	path = externals/nodeeditor
-	url = git@github.com:paceholder/nodeeditor.git
-[submodule "externals/json"]
-	path = externals/json
-	url = git@github.com:nlohmann/json.git

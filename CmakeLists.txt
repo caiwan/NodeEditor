@@ -26,5 +26,5 @@ find_package(Qt5Test REQUIRED)
 SET(APPLICATION_SOURCE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/src/application")
 
 add_subdirectory(src)
-add_subdirectory(externals)
+add_subdirectory(thirdparty)
 add_subdirectory(tests)
