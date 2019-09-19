@@ -4,6 +4,8 @@
 
 namespace NodeEditor {
 
+	class DataModel;
+
 	class Application : public QObject {
 		Q_OBJECT
 	public:
@@ -12,10 +14,12 @@ namespace NodeEditor {
 		Application(int argc, char **argv);
 		~Application();
 
-		int Execute();
+	    int Execute();
 
 	private:
-		QApplication m_qapp;
+	    void BuildPrototypes(DataModel** prototypes);
+
+	    QApplication m_qapp;
 
 		// ReSharper disable CppInconsistentNaming
 		static Application* s_self;
