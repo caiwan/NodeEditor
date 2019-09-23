@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.11)
+cmake_policy(SET CMP0074 NEW)
 
 set(MODULE_NAME "application")
 
@@ -20,6 +20,8 @@ add_library(${MODULE_NAME} STATIC ${SOURCE_FILES} ${HEADER_FILES} ${UI_HEADERS} 
 # Add the Qt5 Widgets for linking
 target_link_libraries(${MODULE_NAME} Qt5::Widgets Qt5::Core nodes)
 
-include_directories("${JSON_INCLUDE_DIR} ${NODES_INCLUDE_DIR}")
+include_directories("${JSON_INCLUDE_DIR} ${NODE_EDITOR_INCLUDE_DIR}")
 
 assign_source_group(${SOURCE_FILES} ${HEADER_FILES} ${UI_HEADERS} ${QRCS})
+
+add_dependencies(${MODULE_NAME} ExternalDependencies)

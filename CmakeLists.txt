@@ -1,16 +1,36 @@
-cmake_minimum_required(VERSION 2.8.11)
+cmake_minimum_required(VERSION 3.13)
 
 project(nodeeditor)
 
 cmake_policy(SET CMP0020 NEW)
-cmake_policy(SET CMP0028 OLD)
+cmake_policy(SET CMP0028 NEW)
 cmake_policy(SET CMP0071 NEW)
 
 set(APPLICATION_NAME node-editor)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-SET(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules")
+message("----------------")
+message("CMAKE_PREFIX_PATH = {")
+foreach (_path_var ${CMAKE_PREFIX_PATH})
+  message("  ${_path_var}")
+endforeach()
+message("}")
+
+set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules" ${CMAKE_MODULE_PATH} )
+
+if (QT5DIR)
+  set(CMAKE_MODULE_PATH
+  "${QT5DIR}/lib/cmake/"
+  "${QT5DIR}/lib/cmake/Qt5/"
+  "${QT5DIR}/lib/cmake/Qt5Core/"
+  "${QT5DIR}/lib/cmake/Qt5Widgets/"
+   ${CMAKE_MODULE_PATH} )
+
+endif(QT5DIR)
+
+message("CMAKE_MODULE_PATH = ${CMAKE_MODULE_PATH}")
+message("----------------")
 
 include (${CMAKE_CURRENT_SOURCE_DIR}/cmake/assign_source_group.cmake)
 include (${CMAKE_CURRENT_SOURCE_DIR}/cmake/add_framework.cmake)
