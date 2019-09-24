@@ -14,8 +14,6 @@ set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules" ${CMAKE_MODULE
 
 if (QT5DIR)
   set(Qt5_DIR "${QT5DIR}/lib/cmake/Qt5" CACHE PATH "")
-  # set(CMAKE_PREFIX_PATH ${Qt5_DIR} ${CMAKE_PREFIX_PATH})
-  # message("szarfos ${Qt5_DIR}")
 endif(QT5DIR)
 
 message("----------------")
