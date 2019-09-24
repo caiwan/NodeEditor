@@ -19,9 +19,9 @@ add_library(${MODULE_NAME} STATIC ${SOURCE_FILES} ${HEADER_FILES} ${UI_HEADERS} 
 
 # Add the Qt5 Widgets for linking
 target_link_libraries(${MODULE_NAME} Qt5::Widgets Qt5::Core nodes)
-
-include_directories("${JSON_INCLUDE_DIR} ${NODE_EDITOR_INCLUDE_DIR}")
-
+include_directories(${JSON_INCLUDE_DIR} ${NODE_EDITOR_INCLUDE_DIR})
 assign_source_group(${SOURCE_FILES} ${HEADER_FILES} ${UI_HEADERS} ${QRCS})
+
+target_compile_definitions(${MODULE_NAME} -DNODE_EDITOR_SHARED)
 
 add_dependencies(${MODULE_NAME} ExternalDependencies)

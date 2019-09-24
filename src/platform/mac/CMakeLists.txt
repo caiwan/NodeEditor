@@ -9,7 +9,6 @@ if( APPLE )
         RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
     )
 
-
     # Add system frameworks
     ADD_SYSTEM_FRAMEWORK( Foundation ${APPLICATION_NAME} )
     ADD_SYSTEM_FRAMEWORK( CoreFoundation ${APPLICATION_NAME} )
