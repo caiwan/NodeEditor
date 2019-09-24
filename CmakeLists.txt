@@ -10,24 +10,20 @@ set(APPLICATION_NAME node-editor)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
+set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules" ${CMAKE_MODULE_PATH} )
+
+if (QT5DIR)
+  set(Qt5_DIR "${QT5DIR}/lib/cmake/Qt5" CACHE PATH "")
+  # set(CMAKE_PREFIX_PATH ${Qt5_DIR} ${CMAKE_PREFIX_PATH})
+  # message("szarfos ${Qt5_DIR}")
+endif(QT5DIR)
+
 message("----------------")
 message("CMAKE_PREFIX_PATH = {")
 foreach (_path_var ${CMAKE_PREFIX_PATH})
   message("  ${_path_var}")
 endforeach()
 message("}")
-
-set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules" ${CMAKE_MODULE_PATH} )
-
-if (QT5DIR)
-  set(CMAKE_MODULE_PATH
-  "${QT5DIR}/lib/cmake/"
-  "${QT5DIR}/lib/cmake/Qt5/"
-  "${QT5DIR}/lib/cmake/Qt5Core/"
-  "${QT5DIR}/lib/cmake/Qt5Widgets/"
-   ${CMAKE_MODULE_PATH} )
-
-endif(QT5DIR)
 
 message("CMAKE_MODULE_PATH = ${CMAKE_MODULE_PATH}")
 message("----------------")

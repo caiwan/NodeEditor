@@ -1,6 +1,10 @@
+@echo off
+
 if not exist msvc md msvc
-cd msvc
+if exist msvc\CMakeCache.txt del msvc\CMakeCache.txt
 
 cd msvc
-cmake -DCMAKE_INSTALL_PREFIX=deploy/dev -DCMAKE_PREFIX_PATH=%CMAKE_PREFIX_PATH% -G "Visual Studio 15 2017 Win64" ../ 
+cmake -DCMAKE_PREFIX_PATH=%CMAKE_PREFIX_PATH%;%QT5_DIR% -DCMAKE_GENERATOR_PLATFORM=x64 ../
+cmake --build ./ --target ExternalDependencies --config Debug
+cmake --build ./ --target ExternalDependencies --config MinSizeRel
 cd ..
