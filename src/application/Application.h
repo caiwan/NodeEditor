@@ -1,29 +1,23 @@
-#pragma once 
+#pragma once
 
 #include <QApplication>
 
-namespace NodeEditor {
+namespace NodeEditor
+{
 
-	class DataModel;
+  class DataModel;
 
-	class Application : public QObject {
-		Q_OBJECT
-	public:
-		static Application* App() { return s_self; }
+  class Application : public QObject
+  {
+    Q_OBJECT
+  public:
+    Application(int argc, char ** argv);
+    ~Application();
 
-		Application(int argc, char **argv);
-		~Application();
+    int Execute();
 
-	    int Execute();
+  private:
+    QApplication mQapp;
+  };
 
-	private:
-	    void BuildPrototypes(DataModel** prototypes);
-
-	    QApplication m_qapp;
-
-		// ReSharper disable CppInconsistentNaming
-		static Application* s_self;
-		// ReSharper restore CppInconsistentNaming
-	};
-
-}
+} // namespace NodeEditor
