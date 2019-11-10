@@ -1,5 +1,3 @@
-cmake_minimum_required(VERSION 2.8.11)
-
 if (WIN32)
 	add_executable(${APPLICATION_NAME} WIN32 "main.cpp")
 

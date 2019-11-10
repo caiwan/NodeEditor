@@ -1,5 +1,3 @@
-cmake_minimum_required(VERSION 2.8.11)
-
 # Mac only stuff 
 if( APPLE )    
     add_executable(${APPLICATION_NAME} MACOSX_BUNDLE "main.cpp")
