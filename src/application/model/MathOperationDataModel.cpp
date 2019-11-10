@@ -2,9 +2,7 @@
 
 #include "DecimalData.hpp"
 
-unsigned int
-MathOperationDataModel::
-nPorts(PortType portType) const
+unsigned int MathOperationDataModel::nPorts(PortType portType) const
 {
   unsigned int result;
 
@@ -17,35 +15,19 @@ nPorts(PortType portType) const
 }
 
 
-NodeDataType
-MathOperationDataModel::
-dataType(PortType, PortIndex) const
+NodeDataType MathOperationDataModel::dataType(PortType, PortIndex) const { return DecimalData().type(); }
+
+
+std::shared_ptr<NodeData> MathOperationDataModel::outData(PortIndex) { return std::static_pointer_cast<NodeData>(_result); }
+
+
+void MathOperationDataModel::setInData(std::shared_ptr<NodeData> data, PortIndex portIndex)
 {
-  return DecimalData().type();
-}
+  auto numberData = std::dynamic_pointer_cast<DecimalData>(data);
 
-
-std::shared_ptr<NodeData>
-MathOperationDataModel::
-outData(PortIndex)
-{
-  return std::static_pointer_cast<NodeData>(_result);
-}
-
-
-void
-MathOperationDataModel::
-setInData(std::shared_ptr<NodeData> data, PortIndex portIndex)
-{
-  auto numberData =
-    std::dynamic_pointer_cast<DecimalData>(data);
-
-  if (portIndex == 0)
-  {
+  if (portIndex == 0) {
     _number1 = numberData;
-  }
-  else
-  {
+  } else {
     _number2 = numberData;
   }
 
@@ -53,17 +35,7 @@ setInData(std::shared_ptr<NodeData> data, PortIndex portIndex)
 }
 
 
-NodeValidationState
-MathOperationDataModel::
-validationState() const
-{
-  return modelValidationState;
-}
+NodeValidationState MathOperationDataModel::validationState() const { return modelValidationState; }
 
 
-QString
-MathOperationDataModel::
-validationMessage() const
-{
-  return modelValidationError;
-}
+QString MathOperationDataModel::validationMessage() const { return modelValidationError; }

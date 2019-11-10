@@ -1,4 +1,4 @@
-#include "application.h"
+#include "application.hpp"
 
 class WindowsApplication : public NodeEditor::Application {
 public:

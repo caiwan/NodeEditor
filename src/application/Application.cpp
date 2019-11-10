@@ -45,10 +45,10 @@ static std::shared_ptr<DataModelRegistry> RegisterDataModels()
   return ret;
 }
 
-#include "Application.h"
-#include "MainWindow.h"
+#include "Application.hpp"
+#include "MainWindow.hpp"
 
-#include "Editor.h"
+#include "Editor.hpp"
 
 using namespace NodeEditor;
 using namespace QtNodes;
@@ -68,6 +68,9 @@ int Application::Execute()
   Editor editor;
   MainWindow mw(nullptr);
 
+  auto menuBar = mw.menuBar();
+  auto saveAction = menuBar->addAction("Save..");
+  auto loadAction = menuBar->addAction("Load..");
 
   FlowScene scene;
   scene.setRegistry(RegisterDataModels());
@@ -75,6 +78,9 @@ int Application::Execute()
 
   mw.SetEditor(&editor);
   editor.SetView(&mw);
+
+  connect(saveAction, &QAction::triggered, &scene, &FlowScene::save);
+  connect(loadAction, &QAction::triggered, &scene, &FlowScene::load);
 
   mw.setCentralWidget(&view);
 

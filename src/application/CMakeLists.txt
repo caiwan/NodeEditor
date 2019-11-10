@@ -12,8 +12,8 @@ qt5_wrap_ui(UI_HEADERS ${UI_FILES})
 # Generate rules for building source files from the resources
 qt5_add_resources(QRCS "res/resources.qrc")
 
-file(GLOB_RECURSE SOURCE_FILES *.cpp)
-file(GLOB_RECURSE HEADER_FILES *.h)
+file(GLOB_RECURSE SOURCE_FILES *.cpp *.c)
+file(GLOB_RECURSE HEADER_FILES *.hpp *.h)
 
 link_directories(${NODE_EDITOR_LIBRARY_DIR})
 include_directories(${JSON_INCLUDE_DIR} ${NODE_EDITOR_INCLUDE_DIR})
