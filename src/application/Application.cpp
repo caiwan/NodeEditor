@@ -1,99 +1,91 @@
 #include <nodes/NodeData>
 #include <nodes/FlowScene>
 #include <nodes/FlowView>
+#include <nodes/ConnectionStyle>
+#include <nodes/TypeConverter>
+#include <nodes/FlowViewStyle>
 
-#include "Application.h"
-#include "MainWindow.h"
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QMenuBar>
 
-#include "Editor.h"
-#include "model/DataModel.h"
-#include "model/DataPort.h"
+#include <nodes/DataModelRegistry>
+
+#include "model/NumberSourceDataModel.hpp"
+#include "model/NumberDisplayDataModel.hpp"
+#include "model/AdditionModel.hpp"
+#include "model/SubtractionModel.hpp"
+#include "model/MultiplicationModel.hpp"
+#include "model/DivisionModel.hpp"
+#include "model/ModuloModel.hpp"
+#include "model/Converters.hpp"
+
+using QtNodes::ConnectionStyle;
+using QtNodes::DataModelRegistry;
+using QtNodes::FlowScene;
+using QtNodes::FlowView;
+using QtNodes::FlowViewStyle;
+using QtNodes::NodeStyle;
+using QtNodes::TypeConverter;
+using QtNodes::TypeConverterId;
+
+
+static std::shared_ptr<DataModelRegistry> RegisterDataModels()
+{
+  auto ret = std::make_shared<DataModelRegistry>();
+  ret->registerModel<NumberSourceDataModel>("Sources");
+  ret->registerModel<NumberDisplayDataModel>("Displays");
+  ret->registerModel<AdditionModel>("Operators");
+  ret->registerModel<SubtractionModel>("Operators");
+  ret->registerModel<MultiplicationModel>("Operators");
+  ret->registerModel<DivisionModel>("Operators");
+  ret->registerModel<ModuloModel>("Operators");
+  ret->registerTypeConverter(std::make_pair(DecimalData().type(), IntegerData().type()), TypeConverter{ DecimalToIntegerConverter() });
+  ret->registerTypeConverter(std::make_pair(IntegerData().type(), DecimalData().type()), TypeConverter{ IntegerToDecimalConverter() });
+  return ret;
+}
+
+#include "Application.hpp"
+#include "MainWindow.hpp"
+
+#include "Editor.hpp"
 
 using namespace NodeEditor;
 using namespace QtNodes;
 
 
-Application* Application::s_self;
-
-Application::Application(int argc, char **argv) :
-	m_qapp(argc, argv)
+Application::Application(int argc, char ** argv) : mQapp(argc, argv)
 {
-	if (s_self) {
-		// app is already inited, halt
-		exit(1);
-	}
-
-	QApplication::setOrganizationDomain("hu.caiwan.nodeeditor");
-	QApplication::setOrganizationName("Caiwan");
-	QApplication::setApplicationName("NodeEditor");
-
-	s_self = this;
+  QApplication::setOrganizationDomain("hu.caiwan.nodeeditor");
+  QApplication::setOrganizationName("Caiwan");
+  QApplication::setApplicationName("NodeEditor");
 }
 
-Application::~Application() {
-	s_self = nullptr;
-}
-
-void Application::BuildPrototypes(DataModel** prototypes)
-{
-	NodeDataType ports[3];
-    ports[0] = NodeDataType{ "int", "int" };
-    ports[1] = NodeDataType{ "string", "string" };
-    ports[2] = NodeDataType{ "float", "float" };
-
-    prototypes[0] = new DataModel();
-    prototypes[0]->SetCaption("Cica");
-    prototypes[0]->SetName("CicaComponent");
-    prototypes[0]->SetIsCaptionVisible(true);
-
-    prototypes[0]->AddInputType(ports[0]);
-    prototypes[0]->AddInputType(ports[1]);
-    prototypes[0]->AddInputType(ports[2]);
-
-    prototypes[0]->AddOutputType(ports[0]);
-    prototypes[0]->AddOutputType(ports[1]);
-    prototypes[0]->AddOutputType(ports[2]);
-
-    prototypes[1] = new DataModel();
-    prototypes[1]->SetCaption("Kutya");
-    prototypes[1]->SetName("KutyaComponent");
-    prototypes[1]->SetIsCaptionVisible(true);
-
-    prototypes[1]->AddInputType(ports[0]);
-    prototypes[1]->AddInputType(ports[1]);
-    prototypes[1]->AddInputType(ports[2]);
-}
+Application::~Application() {}
 
 int Application::Execute()
 {
-	Editor editor;
-	MainWindow mw(nullptr);
+  Editor editor;
+  MainWindow mw(nullptr);
 
-	// ... 
+  auto menuBar = mw.menuBar();
+  auto saveAction = menuBar->addAction("Save..");
+  auto loadAction = menuBar->addAction("Load..");
 
-    DataModel* prototypes[2];
-    BuildPrototypes(prototypes);
+  FlowScene scene;
+  scene.setRegistry(RegisterDataModels());
+  FlowView view(&scene);
 
+  mw.SetEditor(&editor);
+  editor.SetView(&mw);
 
-    auto registry = std::make_shared<DataModelRegistry>();
-	for (auto & prototype : prototypes)
-	{
-		registry->registerModel<DataModel>([&prototype]() {return std::unique_ptr<DataModel>(prototype->Copy()); });
-	}
+  connect(saveAction, &QAction::triggered, &scene, &FlowScene::save);
+  connect(loadAction, &QAction::triggered, &scene, &FlowScene::load);
 
-	FlowScene scene;
+  mw.setCentralWidget(&view);
 
-	scene.setRegistry((registry));
+  mw.show();
+  mw.setFixedSize(800, 600);
 
-	FlowView view(&scene);
-
-	mw.SetEditor(&editor);
-	editor.SetView(&mw);
-
-	mw.setCentralWidget(&view);
-
-	mw.show();
-	mw.setFixedSize(800, 600);
-
-	return QApplication::exec();
+  return QApplication::exec();
 }

@@ -1,8 +1,4 @@
-#include "MainWindow.h"
+#include "MainWindow.hpp"
 
-NodeEditor::MainWindow::MainWindow(QWidget* parent)
-    : QMainWindow(parent)
-{
-}
-
+NodeEditor::MainWindow::MainWindow(QWidget * parent) : QMainWindow(parent) {}
 
