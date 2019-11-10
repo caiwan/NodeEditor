@@ -1,10 +1,13 @@
 #!/bin/bash
-DIR=./build
-[ -d "$DIR" ] && [ -f "$DIR/CmakeCache.txt" ] && rm "$DIR/CmakeCache.txt" || mkdir -p $DIR
-cd $DIR
+BUILD_DIR=./build
+[ -d "$BUILD_DIR" ] && [ -f "$BUILD_DIR/CMakeCache.txt" ] && rm "$BUILD_DIR/CMakeCache.txt" || mkdir -p $BUILD_DIR
+cd $BUILD_DIR
 
-cmake -DCMAKE_INSTALL_PREFIX=deploy/ -DCMAKE_PREFIX_PATH=$QT5DIR/lib/cmake -G "Unix Makefiles" ../
+echo $BUILD_DIR $PWD
 
+echo "cmake -DCMAKE_INSTALL_PREFIX=deploy/ -DCMAKE_PREFIX_PATH=$CMAKE_PREFIX_PATH;$QT5_DIR -G \"Unix Makefiles\" ../"
+
+cmake -DCMAKE_INSTALL_PREFIX=deploy/ -DCMAKE_PREFIX_PATH="$CMAKE_PREFIX_PATH;$QT5_DIR" -G "Unix Makefiles" ../
 cmake --build ./ --target ExternalDependencies
 
 cd ../
