@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 3.13)
 
-cmake_policy(SET CMP0048 OLD)
-project(nodeeditor)
+project(nodeeditor VERSION 0.1.0 LANGUAGES CXX)
 
 cmake_policy(SET CMP0020 NEW)
 cmake_policy(SET CMP0028 NEW)

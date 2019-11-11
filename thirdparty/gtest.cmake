@@ -1,4 +1,4 @@
-include (ExternalProject)
+include(ExternalProject)
 
 SET(PREFIX googletest)
 SET(GIT_URL https://github.com/google/googletest.git)
@@ -15,15 +15,15 @@ ExternalProject_Add(${PREFIX}
   UPDATE_COMMAND ""
   PATCH_COMMAND ""
   TEST_COMMAND ""
-)
+  )
 
 SET(GTEST_INCLUDE_DIR "${GTEST_INSTALL_DIR}/include" CACHE PATH "")
 
 ## -- Windows
 if (WIN32)
   # NOTE: MSVC only
-  SET(GTEST_LIB_DIR "${GTEST_INSTALL_DIR}/lib" CACHE PATH "" )
-  SET(GTEST_BIN_DIR "${GTEST_INSTALL_DIR}/bin" CACHE PATH "" )
+  SET(GTEST_LIB_DIR "${GTEST_INSTALL_DIR}/lib" CACHE PATH "")
+  SET(GTEST_BIN_DIR "${GTEST_INSTALL_DIR}/bin" CACHE PATH "")
   SET(GTEST_lib_suffix ".lib")
   SET(GTEST_bin_prefix "")
   SET(GTEST_bin_suffix ".dll")
@@ -32,67 +32,97 @@ endif (WIN32)
 
 ## -- Linux
 
-if(UNIX AND NOT APPLE)
-  SET(GTEST_LIB_DIR "${GTEST_INSTALL_DIR}/lib" CACHE PATH "" )
-  SET(GTEST_BIN_DIR "${GTEST_INSTALL_DIR}/lib" CACHE PATH "" )
+if (UNIX AND NOT APPLE)
+  SET(GTEST_LIB_DIR "${GTEST_INSTALL_DIR}/lib" CACHE PATH "")
+  SET(GTEST_BIN_DIR "${GTEST_INSTALL_DIR}/lib" CACHE PATH "")
   SET(GTEST_lib_suffix "")
   SET(GTEST_bin_prefix "lib")
   SET(GTEST_bin_suffix ".so")
-endif()
+endif ()
 
 ## -- Apple
 
 if (APPLE)
-  SET(GTEST_LIB_DIR "${GTEST_INSTALL_DIR}/lib" CACHE PATH "" )
-  SET(GTEST_BIN_DIR "${GTEST_INSTALL_DIR}/lib" CACHE PATH "" )
+  SET(GTEST_LIB_DIR "${GTEST_INSTALL_DIR}/lib" CACHE PATH "")
+  SET(GTEST_BIN_DIR "${GTEST_INSTALL_DIR}/lib" CACHE PATH "")
   SET(GTEST_lib_suffix "")
   SET(GTEST_bin_prefix "lib")
   SET(GTEST_bin_suffix ".dylib")
-endif()
+endif ()
 
 # Glue it all together
 
-SET(GTEST_TEST_LIBRARY
-  optimized   gtest${CMAKE_RELEASE_POSTFIX}${GTEST_lib_suffix}
-  debug       gtest${CMAKE_DEBUG_POSTFIX}${GTEST_lib_suffix}
-  optimized   gtest_main${CMAKE_RELEASE_POSTFIX}${GTEST_lib_suffix}
-  debug       gtest_main${CMAKE_DEBUG_POSTFIX}${GTEST_lib_suffix}
-CACHE INTERNAL "" FORCE
-)
+if (GENERATOR_IS_MULTI_CONFIG)
+  SET(GTEST_TEST_LIBRARY
+    optimized gtest${CMAKE_RELEASE_POSTFIX}${GTEST_lib_suffix}
+    debug gtest${CMAKE_DEBUG_POSTFIX}${GTEST_lib_suffix}
+    optimized gtest_main${CMAKE_RELEASE_POSTFIX}${GTEST_lib_suffix}
+    debug gtest_main${CMAKE_DEBUG_POSTFIX}${GTEST_lib_suffix}
+    CACHE INTERNAL "" FORCE
+    )
 
-SET(GTEST_MOCK_LIBRARY
-  optimized   gmock${CMAKE_RELEASE_POSTFIX}${GTEST_lib_suffix}
-  debug       gmock${CMAKE_DEBUG_POSTFIX}${GTEST_lib_suffix}
-  optimized   gmock_main${CMAKE_RELEASE_POSTFIX}${GTEST_lib_suffix}
-  debug       gmock_main${CMAKE_DEBUG_POSTFIX}${CMAKE_DEBUG_POSTFIX}${GTEST_lib_suffix}
-CACHE INTERNAL "" FORCE
-)
+  SET(GTEST_MOCK_LIBRARY
+    optimized gmock${CMAKE_RELEASE_POSTFIX}${GTEST_lib_suffix}
+    debug gmock${CMAKE_DEBUG_POSTFIX}${GTEST_lib_suffix}
+    optimized gmock_main${CMAKE_RELEASE_POSTFIX}${GTEST_lib_suffix}
+    debug gmock_main${CMAKE_DEBUG_POSTFIX}${CMAKE_DEBUG_POSTFIX}${GTEST_lib_suffix}
+    CACHE INTERNAL "" FORCE
+    )
 
-SET(GTEST_BOTH_LIBRARIES ${GTEST_TEST_LIBRARY} ${GTEST_MOCK_LIBRARY} CACHE INTERNAL "" FORCE )
+else ()
+  string(TOUPPER ${CMAKE_BUILD_TYPE} _CMAKE_BUILD_TYPE)
+  if (_CMAKE_BUILD_TYPE STREQUAL "DEBUG")
+    SET(GTEST_TEST_LIBRARY
+      gtest${CMAKE_DEBUG_POSTFIX}${GTEST_lib_suffix}
+      gtest_main${CMAKE_DEBUG_POSTFIX}${GTEST_lib_suffix}
+      CACHE INTERNAL "" FORCE
+      )
+
+    SET(GTEST_MOCK_LIBRARY
+      gmock${CMAKE_DEBUG_POSTFIX}${GTEST_lib_suffix}
+      gmock_main${CMAKE_DEBUG_POSTFIX}${CMAKE_DEBUG_POSTFIX}${GTEST_lib_suffix}
+      CACHE INTERNAL "" FORCE
+      )
+  elseif (_CMAKE_BUILD_TYPE STREQUAL "RELEASE")
+    SET(GTEST_TEST_LIBRARY
+      gtest${CMAKE_RELEASE_POSTFIX}${GTEST_lib_suffix}
+      gtest_main${CMAKE_RELEASE_POSTFIX}${GTEST_lib_suffix}
+      CACHE INTERNAL "" FORCE
+      )
+
+    SET(GTEST_MOCK_LIBRARY
+      gmock${CMAKE_RELEASE_POSTFIX}${GTEST_lib_suffix}
+      gmock_main${CMAKE_RELEASE_POSTFIX}${GTEST_lib_suffix}
+      CACHE INTERNAL "" FORCE
+      )
+  endif ()
+endif ()
+
+SET(GTEST_BOTH_LIBRARIES ${GTEST_TEST_LIBRARY} ${GTEST_MOCK_LIBRARY} CACHE INTERNAL "" FORCE)
 
 SET(GTEST_TEST_BINARY_RELEASE
   ${GTEST_BIN_DIR}/${GTEST_bin_prefix}gtest${GTEST_bin_suffix}
   ${GTEST_BIN_DIR}/${GTEST_bin_prefix}gtest_main${GTEST_bin_suffix}
-CACHE INTERNAL "" FORCE
-)
+  CACHE INTERNAL "" FORCE
+  )
 
 SET(GTEST_TEST_BINARY_DEBUG
   ${GTEST_BIN_DIR}/${GTEST_bin_prefix}gtest${CMAKE_DEBUG_POSTFIX}${GTEST_bin_suffix}
   ${GTEST_BIN_DIR}/${GTEST_bin_prefix}gtest_main${CMAKE_DEBUG_POSTFIX}${GTEST_bin_suffix}
-CACHE INTERNAL "" FORCE
-)
+  CACHE INTERNAL "" FORCE
+  )
 
 SET(GTEST_MOCK_BINARY_RELEASE
   ${GTEST_BIN_DIR}/${GTEST_bin_prefix}gmock${GTEST_bin_suffix}
   ${GTEST_BIN_DIR}/${GTEST_bin_prefix}gmock_main${GTEST_bin_suffix}
-CACHE INTERNAL "" FORCE
-)
+  CACHE INTERNAL "" FORCE
+  )
 
 SET(GTEST_MOCK_BINARY_DEBUG
   ${GTEST_BIN_DIR}/${GTEST_bin_prefix}gmock${CMAKE_DEBUG_POSTFIX}${GTEST_bin_suffix}
   ${GTEST_BIN_DIR}/${GTEST_bin_prefix}gmock_main${CMAKE_DEBUG_POSTFIX}${GTEST_bin_suffix}
-CACHE INTERNAL "" FORCE
-)
+  CACHE INTERNAL "" FORCE
+  )
 
-SET(GTEST_BOTH_BINARIES_RELEASE ${GTEST_TEST_BINARY_RELEASE} ${GTEST_MOCK_BINARY_RELEASE} CACHE INTERNAL "" FORCE )
-SET(GTEST_BOTH_BINARIES_DEBUG ${GTEST_TEST_BINARY_DEBUG} ${GTEST_MOCK_BINARY_DEBUG} CACHE INTERNAL "" FORCE )
+SET(GTEST_BOTH_BINARIES_RELEASE ${GTEST_TEST_BINARY_RELEASE} ${GTEST_MOCK_BINARY_RELEASE} CACHE INTERNAL "" FORCE)
+SET(GTEST_BOTH_BINARIES_DEBUG ${GTEST_TEST_BINARY_DEBUG} ${GTEST_MOCK_BINARY_DEBUG} CACHE INTERNAL "" FORCE)
