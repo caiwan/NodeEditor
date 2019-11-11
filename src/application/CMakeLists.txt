@@ -1,12 +1,12 @@
 cmake_policy(SET CMP0074 NEW)
 
+include(assign_source_group)
+
 set(MODULE_NAME "application")
 
-file(GLOB_RECURSE UI_FILES *.ui)
-
-set(CMAKE_AUTOMOC ON) 
-
 # Generate code from ui files
+file(GLOB_RECURSE UI_FILES *.ui)
+set(CMAKE_AUTOMOC ON) 
 qt5_wrap_ui(UI_HEADERS ${UI_FILES})
 
 # Generate rules for building source files from the resources
