@@ -1,13 +1,15 @@
+#include <memory>
+
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QMenuBar>
+
 #include <nodes/NodeData>
 #include <nodes/FlowScene>
 #include <nodes/FlowView>
 #include <nodes/ConnectionStyle>
 #include <nodes/TypeConverter>
 #include <nodes/FlowViewStyle>
-
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QVBoxLayout>
-#include <QtWidgets/QMenuBar>
 
 #include <nodes/DataModelRegistry>
 

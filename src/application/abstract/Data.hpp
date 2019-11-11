@@ -1,9 +1,9 @@
-#pragma onde
+#pragma once
 
 #include <memory>
 #include <string>
 
-#include "Fwd.hpp"
+#include "fwd.hpp"
 
 class DataType
 {

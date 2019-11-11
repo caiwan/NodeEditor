@@ -1,7 +1,11 @@
 enable_testing()
 
 include(GoogleTest)
-# include("deploy_tests.cmake")
+
+# ---
+set(DEPLOY_TESTS DeployTests)
+include("deploy_tests.cmake")
+# ---
 
 set(TEST_TARGET UnitTests)
 
@@ -20,11 +24,11 @@ set_target_properties(${TEST_TARGET} PROPERTIES FOLDER tests)
 # gtest_discover_tests(${TEST_TARGET} WORKING_DIRECTORY ${TEST_DEPLOY_DIR} TEST_PREFIX new: TEST_EXECUTOR CTest)
 
 if (MSVC)
-    # set_target_properties(${TEST_TARGET} PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "${TEST_DEPLOY_DIR}")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /DGTEST_LINKED_AS_SHARED_LIBRARY=1")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /DGTEST_LINKED_AS_SHARED_LIBRARY=1")
+  # set_target_properties(${TEST_TARGET} PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "${TEST_DEPLOY_DIR}")
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /DGTEST_LINKED_AS_SHARED_LIBRARY=1")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /DGTEST_LINKED_AS_SHARED_LIBRARY=1")
 endif (MSVC)
 
 add_test(NAME Tests COMMAND ${TEST_TARGET} WORKING_DIRECTORY ${TEST_DEPLOY_DIR})
 
-add_dependencies(${TEST_TARGET} DeployTests)
+add_dependencies(${TEST_TARGET} ${DEPLOY_TESTS})

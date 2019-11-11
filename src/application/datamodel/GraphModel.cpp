@@ -1,1 +1,1 @@
-#include "graphmodel.hpp"
+#include "GraphModel.hpp"

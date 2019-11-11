@@ -11,7 +11,7 @@ ExternalProject_Add(${PREFIX}
   GIT_REPOSITORY "${GIT_URL}"
   GIT_TAG "${GIT_TAG}"
   PREFIX "${CMAKE_CURRENT_BINARY_DIR}"
-  CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${GTEST_INSTALL_DIR} -DBUILD_SHARED_LIBS=ON
+  CMAKE_ARGS ${CL_ARGS} -DCMAKE_INSTALL_PREFIX=${GTEST_INSTALL_DIR} -DBUILD_SHARED_LIBS=ON -DCMAKE_DEBUG_POSTFIX=${CMAKE_DEBUG_POSTFIX}
   UPDATE_COMMAND ""
   PATCH_COMMAND ""
   TEST_COMMAND ""
@@ -50,21 +50,21 @@ if (APPLE)
   SET(GTEST_bin_suffix ".dylib")
 endif()
 
-# Glue all together
+# Glue it all together
 
 SET(GTEST_TEST_LIBRARY
-  optimized   gtest${GTEST_lib_suffix}
+  optimized   gtest${CMAKE_RELEASE_POSTFIX}${GTEST_lib_suffix}
   debug       gtest${CMAKE_DEBUG_POSTFIX}${GTEST_lib_suffix}
-  optimized   gtest_main${GTEST_lib_suffix}
+  optimized   gtest_main${CMAKE_RELEASE_POSTFIX}${GTEST_lib_suffix}
   debug       gtest_main${CMAKE_DEBUG_POSTFIX}${GTEST_lib_suffix}
 CACHE INTERNAL "" FORCE
 )
 
 SET(GTEST_MOCK_LIBRARY
-  optimized   gmock${GTEST_lib_suffix}
+  optimized   gmock${CMAKE_RELEASE_POSTFIX}${GTEST_lib_suffix}
   debug       gmock${CMAKE_DEBUG_POSTFIX}${GTEST_lib_suffix}
-  optimized   gmock_main${GTEST_lib_suffix}
-  debug       gmock_main${CMAKE_DEBUG_POSTFIX}${GTEST_lib_suffix}
+  optimized   gmock_main${CMAKE_RELEASE_POSTFIX}${GTEST_lib_suffix}
+  debug       gmock_main${CMAKE_DEBUG_POSTFIX}${CMAKE_DEBUG_POSTFIX}${GTEST_lib_suffix}
 CACHE INTERNAL "" FORCE
 )
 
