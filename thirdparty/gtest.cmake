@@ -19,6 +19,8 @@ ExternalProject_Add(${PREFIX}
 
 SET(GTEST_INCLUDE_DIR "${GTEST_INSTALL_DIR}/include" CACHE PATH "")
 
+## TODO Probably we'll need just the libraries
+
 ## -- Windows
 if (WIN32)
   # NOTE: MSVC only
@@ -27,7 +29,6 @@ if (WIN32)
   SET(GTEST_lib_suffix ".lib")
   SET(GTEST_bin_prefix "")
   SET(GTEST_bin_suffix ".dll")
-
 endif (WIN32)
 
 ## -- Linux
@@ -73,26 +74,13 @@ else ()
   string(TOUPPER ${CMAKE_BUILD_TYPE} _CMAKE_BUILD_TYPE)
   if (_CMAKE_BUILD_TYPE STREQUAL "DEBUG")
     SET(GTEST_TEST_LIBRARY
-      gtest${CMAKE_DEBUG_POSTFIX}${GTEST_lib_suffix}
-      gtest_main${CMAKE_DEBUG_POSTFIX}${GTEST_lib_suffix}
+      gtest${GTEST_lib_suffix}
+      gtest_main${GTEST_lib_suffix}
       CACHE INTERNAL "" FORCE
       )
-
     SET(GTEST_MOCK_LIBRARY
-      gmock${CMAKE_DEBUG_POSTFIX}${GTEST_lib_suffix}
-      gmock_main${CMAKE_DEBUG_POSTFIX}${CMAKE_DEBUG_POSTFIX}${GTEST_lib_suffix}
-      CACHE INTERNAL "" FORCE
-      )
-  elseif (_CMAKE_BUILD_TYPE STREQUAL "RELEASE")
-    SET(GTEST_TEST_LIBRARY
-      gtest${CMAKE_RELEASE_POSTFIX}${GTEST_lib_suffix}
-      gtest_main${CMAKE_RELEASE_POSTFIX}${GTEST_lib_suffix}
-      CACHE INTERNAL "" FORCE
-      )
-
-    SET(GTEST_MOCK_LIBRARY
-      gmock${CMAKE_RELEASE_POSTFIX}${GTEST_lib_suffix}
-      gmock_main${CMAKE_RELEASE_POSTFIX}${GTEST_lib_suffix}
+      gmock${GTEST_lib_suffix}
+      gmock_main${GTEST_lib_suffix}
       CACHE INTERNAL "" FORCE
       )
   endif ()

@@ -17,7 +17,8 @@ include_directories("${APPLICATION_SOURCE_PATH}")
 
 add_executable(${TEST_TARGET} EXCLUDE_FROM_ALL ${SOURCE_FILES} ${HEADER_FILES})
 
-target_link_libraries(${TEST_TARGET} application ${GTEST_BOTH_LIBRARIES})
+target_link_libraries(${TEST_TARGET} application gtest gtest_main)
+# target_link_libraries(${TEST_TARGET} application ${GTEST_BOTH_LIBRARIES})
 set_target_properties(${TEST_TARGET} PROPERTIES FOLDER tests)
 
 # gtest_add_tests(TARGET ${TEST_TARGET} WORKING_DIRECTORY ${TEST_DEPLOY_DIR} TEST_PREFIX old: TEST_EXECUTOR CTest)
