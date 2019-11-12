@@ -1,4 +1,4 @@
-#pragma once 
+#pragma once
 
 #include <memory>
 
@@ -8,7 +8,7 @@
 class Node {
   protected:
   std::weak_ptr<NodeType> mType;
-  std::weak_ptr<Context> mContext;
+    std::weak_ptr<ExecutionContext> mContext;
 
-  // Other stuff ??? 
+    // Other stuff ???
 };

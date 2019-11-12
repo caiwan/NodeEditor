@@ -19,7 +19,7 @@ ExternalProject_Add(${PREFIX}
 
 SET(GTEST_INCLUDE_DIR "${GTEST_INSTALL_DIR}/include" CACHE PATH "")
 
-## TODO Probably we'll need just the libraries
+## TODO Probably we'll need just the libraries to be copied around
 
 ## -- Windows
 if (WIN32)

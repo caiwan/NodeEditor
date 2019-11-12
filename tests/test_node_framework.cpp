@@ -26,7 +26,7 @@ TEST_F(NodeTest, ModuleTest) {
   CreateModule();
 
   // When
-  auto myContext = std::make_shared<Context>(myModule, "my execution queue");
+  auto myContext = std::make_shared<ExecutionContext>(myModule, "my execution queue");
   auto myFirstNode = myContext->CreateNode(0);
   auto mySecondNode = myContext->CreateNode(1);
 

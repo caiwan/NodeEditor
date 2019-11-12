@@ -1,7 +1,8 @@
-#pragma once 
+#pragma once
 
 class Connection;
-class Context;
+
+class ExecutionContext;
 class DataType;
 class Module;
 class NodeType;
