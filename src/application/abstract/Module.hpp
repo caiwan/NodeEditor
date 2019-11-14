@@ -31,19 +31,21 @@ public:
 
     std::string Name() const { return mName; }
 
+    // Types
     void AddType(const std::shared_ptr<NodeType> &type);
 
     size_t TypeCount() const;
 
     std::weak_ptr<NodeType> Type(size_t id);
 
+    // Contexts
     void AddContext(const std::shared_ptr<ExecutionContext> &context);
 
     size_t ContexCount() const;
 
     std::weak_ptr<ExecutionContext> Context(size_t id);
 
-    void RemoveContext(size_t id);
+    void RemoveContext(size_t id); // TODO: How do we delete this properly?
 
     // TODO Split Module representation and it's interface
     // - This will needed to store the types and name, but also to hold the context which are created
